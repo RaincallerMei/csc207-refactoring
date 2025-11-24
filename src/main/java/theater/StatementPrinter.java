@@ -24,17 +24,16 @@ public class StatementPrinter {
     public String statement() {
         final StringBuilder result = new StringBuilder("Statement for "
                 + invoice.getCustomer() + System.lineSeparator());
-        final NumberFormat frmt = NumberFormat.getCurrencyInstance(Locale.US);
 
         for (Performance p : invoice.getPerformances()) {
             // print line for this order
             result.append(String.format("  %s: %s (%s seats)%n",
                     getPlay(p).getName(),
-                    frmt.format(getAmount(p) / Constants.PERCENT_FACTOR),
+                    usd(getAmount(p)),
                     p.getAudience()));
         }
 
-        result.append(String.format("Amount owed is %s%n", frmt.format(getTotalAmount() / Constants.PERCENT_FACTOR)));
+        result.append(String.format("Amount owed is %s%n", usd(getTotalAmount())));
         result.append(String.format("You earned %s credits%n", getVolumeCredits()));
         return result.toString();
     }
