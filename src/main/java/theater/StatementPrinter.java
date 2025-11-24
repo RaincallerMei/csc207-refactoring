@@ -29,25 +29,25 @@ public class StatementPrinter {
         for (Performance p : invoice.getPerformances()) {
             // print line for this order
             result.append(String.format("  %s: %s (%s seats)%n",
-                    playFor(p).getName(),
-                    frmt.format(amountFor(p) / Constants.PERCENT_FACTOR),
+                    getPlay(p).getName(),
+                    frmt.format(getAmount(p) / Constants.PERCENT_FACTOR),
                     p.getAudience()));
         }
 
         result.append(String.format("Amount owed is %s%n", frmt.format(getTotalAmount() / Constants.PERCENT_FACTOR)));
-        result.append(String.format("You earned %s credits%n", getTotalVolumeCredits()));
+        result.append(String.format("You earned %s credits%n", getVolumeCredits()));
         return result.toString();
     }
 
     private int getTotalAmount() {
         int result = 0;
         for (Performance p : invoice.getPerformances()) {
-            result += amountFor(p);
+            result += getAmount(p);
         }
         return result;
     }
 
-    private int getTotalVolumeCredits() {
+    private int getVolumeCredits() {
         int result = 0;
         for (Performance p : invoice.getPerformances()) {
             result += volumeCreditsFor(p);
@@ -59,19 +59,19 @@ public class StatementPrinter {
         int result = 0;
         result += Math.max(aPerformance.getAudience() - Constants.BASE_VOLUME_CREDIT_THRESHOLD, 0);
         // add extra credit for every five comedy attendees
-        if ("comedy".equals(playFor(aPerformance).getType())) {
+        if ("comedy".equals(getPlay(aPerformance).getType())) {
             result += aPerformance.getAudience() / Constants.COMEDY_EXTRA_VOLUME_FACTOR;
         }
         return result;
     }
 
-    private Play playFor(Performance aPerformance) {
+    private Play getPlay(Performance aPerformance) {
         return plays.get(aPerformance.getPlayID());
     }
 
-    private int amountFor(Performance aPerformance) {
+    private int getAmount(Performance aPerformance) {
         int result;
-        switch (playFor(aPerformance).getType()) {
+        switch (getPlay(aPerformance).getType()) {
             case "tragedy":
                 result = Constants.TRAGEDY_BASE_AMOUNT;
                 if (aPerformance.getAudience() > Constants.TRAGEDY_AUDIENCE_THRESHOLD) {
@@ -89,7 +89,7 @@ public class StatementPrinter {
                 result += Constants.COMEDY_AMOUNT_PER_AUDIENCE * aPerformance.getAudience();
                 break;
             default:
-                throw new RuntimeException(String.format("unknown type: %s", playFor(aPerformance).getType()));
+                throw new RuntimeException(String.format("unknown type: %s", getPlay(aPerformance).getType()));
         }
         return result;
     }
