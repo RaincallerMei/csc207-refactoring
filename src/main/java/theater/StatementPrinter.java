@@ -39,6 +39,10 @@ public class StatementPrinter {
         return result.toString();
     }
 
+    private String usd(int amount) {
+        return NumberFormat.getCurrencyInstance(Locale.US).format(amount / Constants.PERCENT_FACTOR);
+    }
+
     private int getTotalAmount() {
         int result = 0;
         for (Performance p : invoice.getPerformances()) {
