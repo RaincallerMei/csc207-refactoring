@@ -86,7 +86,8 @@ public class StatementPrinter {
                 result = Constants.COMEDY_BASE_AMOUNT;
                 if (aPerformance.getAudience() > Constants.COMEDY_AUDIENCE_THRESHOLD) {
                     result += Constants.COMEDY_OVER_BASE_CAPACITY_AMOUNT
-                            + (Constants.COMEDY_OVER_BASE_CAPACITY_PER_PERSON * (aPerformance.getAudience() - Constants.COMEDY_AUDIENCE_THRESHOLD));
+                            + (Constants.COMEDY_OVER_BASE_CAPACITY_PER_PERSON
+                            * (aPerformance.getAudience() - Constants.COMEDY_AUDIENCE_THRESHOLD));
                 }
                 result += Constants.COMEDY_AMOUNT_PER_AUDIENCE * aPerformance.getAudience();
                 break;
